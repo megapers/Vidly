@@ -27,5 +27,9 @@ namespace Vidly.DTOs
         [Display(Name = "Number In Stock")]
         [Range(1, 20)]
         public byte InStock { get; set; }
+
+        [Display(Name = "Number Available")]
+        [Range(1, 20)]
+        public byte Available { get; set; }
     }
 }

@@ -45,3 +45,37 @@ label.error{
 input.error{
     border: 2px solid red;
 }
+
+.btn-facebook {
+    color: white;
+    background-color: #164675;
+    border-color: #adadad;
+    display: block;
+    width: 250px;
+    cursor: pointer;
+    text-align: center;
+    padding: 14px 28px;
+}
+
+.btn-facebook:hover {
+    color: white;
+    background-color: #07345e;
+    border-color: red;
+}
+
+.btn-google {
+    color: #333;
+    background-color: #fff;
+    border-color: #adadad;
+    display: block;
+    width: 250px;
+    cursor: pointer;
+    text-align: center;
+    padding: 14px 28px;
+}
+
+.btn-google:hover {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: red;
+}

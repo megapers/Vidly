@@ -11,11 +11,9 @@ namespace Vidly.Models
     {
         public ApplicationUser(): base(){}
 
-        [Required]
         [MaxLength(255)]
         public string DrivingLicense { get; set; }
 
-        [Required]
         [MaxLength(50)]
         public string Phone { get; set; }
 

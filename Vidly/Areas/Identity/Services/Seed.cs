@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Vidly.Models;
 
 namespace Vidly.Areas.Identity.Services
 {
@@ -12,8 +13,8 @@ namespace Vidly.Areas.Identity.Services
         {
             //initializing custom roles   
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            string[] roleNames = { "Admin", "User", "HR", "CanManageMovies" };
+            var UserManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            string[] roleNames = { "Admin", "User"};
             IdentityResult roleResult;
 
             foreach (var roleName in roleNames)
@@ -21,59 +22,24 @@ namespace Vidly.Areas.Identity.Services
                 var roleExist = await RoleManager.RoleExistsAsync(roleName);
                 if (!roleExist)
                 {
-                    //create the roles and seed them to the database: Question 1  
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
 
-            IdentityUser user = await UserManager.FindByEmailAsync("admin@gmail.com");
-            if (user == null)
+            var admin = await UserManager.FindByEmailAsync("admin@vidly.com");
+            if (admin == null)
             {
-                user = new IdentityUser()
-                {
-                    UserName = "admin@gmail.com",
-                    Email = "admin@gmail.com",
-                };
-                await UserManager.CreateAsync(user, "Test@123");
-            }
-            await UserManager.AddToRoleAsync(user, "Admin");
-
-
-            IdentityUser user1 = await UserManager.FindByEmailAsync("user@gmail.com");
-            if (user1 == null)
-            {
-                user1 = new IdentityUser()
-                {
-                    UserName = "user@gmail.com",
-                    Email = "user@gmail.com",
-                };
-                await UserManager.CreateAsync(user1, "Test@123");
-            }
-            await UserManager.AddToRoleAsync(user1, "User");
-
-            IdentityUser user2 = await UserManager.FindByEmailAsync("hr@gmail.com");
-            if (user2 == null)
-            {
-                user2 = new IdentityUser()
-                {
-                    UserName = "hr@gmail.com",
-                    Email = "hr@gmail.com",
-                };
-                await UserManager.CreateAsync(user2, "Test@123");
-            }
-            await UserManager.AddToRoleAsync(user2, "HR");
-
-            IdentityUser user3 = await UserManager.FindByEmailAsync("admin@vidly.com");
-            if (user3 == null)
-            {
-                user3 = new IdentityUser()
+                admin = new ApplicationUser()
                 {
                     UserName = "admin@vidly.com",
                     Email = "admin@vidly.com",
                 };
-                await UserManager.CreateAsync(user3, "2783Test!");
+                var adminUser = await UserManager.CreateAsync(admin, "Test@123");
+                if (adminUser.Succeeded)
+                {
+                    await UserManager.AddToRoleAsync(admin, "Admin");
+                }
             }
-            await UserManager.AddToRoleAsync(user3, "CanManageMovies");
 
         }
     }

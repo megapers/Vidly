@@ -14,20 +14,14 @@
                 <hr />
                 @Html.ValidationSummary()
                 <div class="form-group">
-                    @Html.LabelFor(e => e.Input.Email)
-                    @Html.TextBoxFor(e => e.Input.Email, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(e => e.Input.Email)
-                    @*<label asp-for="Input.Email"></label>
-            <input asp-for="Input.Email" class="form-control" />
-            <span asp-validation-for="Input.Email" class="text-danger"></span>*@
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" class="form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    @*<label asp-for="Input.Password"></label>
+                    <label asp-for="Input.Password"></label>
                     <input asp-for="Input.Password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>*@
-                    @Html.LabelFor(p => p.Input.Password)
-                    @Html.TextBoxFor(p => p.Input.Password, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(p => p.Input.Password)
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
@@ -72,7 +66,16 @@
                             <p>
                                 @foreach (var provider in Model.ExternalLogins)
                                 {
-                                    <button type="submit" class="btn btn-default" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    @if (provider.Name == "Facebook")
+                                    {
+                                        <button type="submit" class="btn btn-facebook" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-facebook-official"></i> Continue with Facebook</button>
+                                    }
+                                    <br>
+                                   @if (provider.Name == "Google")
+                                    {
+                                        <button type="submit" class="btn btn-google" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"><i class="fa fa-google"></i> Continue with Google</button>
+                                    }
+
                                 }
                             </p>
                         </div>
@@ -85,4 +88,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 }

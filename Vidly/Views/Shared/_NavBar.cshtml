@@ -12,10 +12,21 @@
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
-                <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
-                <li>@Html.ActionLink("New Rental", "New", "Rentals")</li>
-
+                @if (User.IsInRole(RoleName.Admin))
+                {
+                    <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
+                    <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
+                    <li>@Html.ActionLink("New Rental", "New", "Rentals")</li>
+                }
+                else if (User.IsInRole(RoleName.User))
+                {
+                    <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
+                    <li>@Html.ActionLink("New Rental", "New", "Rentals")</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
+                }
             </ul>
             <partial name="_LoginPartial" />
         </div>

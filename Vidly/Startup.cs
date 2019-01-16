@@ -40,9 +40,9 @@ namespace Vidly
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-           .AddEntityFrameworkStores<ApplicationDbContext>()
-           .AddUserManager<ApplicationUserManager>()
-           .AddDefaultTokenProviders();
+               .AddEntityFrameworkStores<ApplicationDbContext>()
+               .AddUserManager<ApplicationUserManager>()
+               .AddDefaultTokenProviders();
 
 
             //Password Strength Setting 
@@ -109,21 +109,27 @@ namespace Vidly
             //Policy based role checks
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("OnlyAdminAccess", policy => policy.RequireRole("User"));
                 options.AddPolicy("CanManageMovies", policy => policy.RequireUserName("admin@vidly.com"));
             });
 
-            ////Facebook login
+            //Facebook/Google login
             services.AddAuthentication()
             .AddFacebook(facebookOptions =>
             {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                
+                //facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];////Stored in secrets.json for testing purposes only
+                //facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                facebookOptions.AppId = Configuration.GetValue<string>("ExternalLogins:Facebook_AppId");//Only for demo purposes values are stored in appsettings.json
+                facebookOptions.AppSecret = Configuration.GetValue<string>("ExternalLogins:Facebook_AppSecret");
+
+                
             })
             .AddGoogle(googleOptions =>
             {
-                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                //googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                //googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                googleOptions.ClientId = Configuration.GetValue<string>("ExternalLogins:Google_ClientId");//Only for demo purposes values are stored in appsettings.json
+                googleOptions.ClientSecret = Configuration.GetValue<string>("ExternalLogins:Google_ClientSecret");
             });
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddAutoMapper();
@@ -157,6 +163,9 @@ namespace Vidly
             // Workaround for AccessDenied URL error in MSFT code - redirects to login page
             RewriteOptions rewrite = new RewriteOptions().AddRedirect("^Account/AccessDenied(.*)", "Identity/Account/Login");
             app.UseRewriter(rewrite);
+
+            app.UseDeveloperExceptionPage();
+            app.UseDatabaseErrorPage();
         }
     }
 }

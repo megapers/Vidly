@@ -66,7 +66,7 @@ namespace Vidly.Controllers.Api
         }
 
         //POST /api/movies
-        [Authorize(Roles = RoleName.CanManageMovies)]
+        [Authorize(Roles = RoleName.Admin)]
         [HttpPost]
         public async Task<IActionResult> CreateMovie([FromBody]MovieDto movieDto)
         {
@@ -89,7 +89,7 @@ namespace Vidly.Controllers.Api
         }
 
         //PUT /api/movies/id
-        [Authorize(Roles = RoleName.CanManageMovies)]
+        [Authorize(Roles = RoleName.Admin)]
         [HttpPut("{id}")]
         public async Task UpdateMovie(int id, [FromBody]MovieDto movieDto)
         {
@@ -110,7 +110,7 @@ namespace Vidly.Controllers.Api
         }
 
         //DELETE /api/movies/id
-        [Authorize(Roles = RoleName.CanManageMovies)]
+        [Authorize(Roles = RoleName.Admin)]
         [HttpDelete("{id}")]
         public async Task DeleteMovie(int id)
         {

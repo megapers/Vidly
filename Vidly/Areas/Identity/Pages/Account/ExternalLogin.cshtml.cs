@@ -45,16 +45,6 @@ namespace Vidly.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
-
-            [Required]
-            [MaxLength(255)]
-            [Display(Name = "Driving License")]
-            public string DrivingLicense { get; set; }
-
-            [Required]
-            [MaxLength(50)]
-            [Display(Name = "Phone number")]
-            public string Phone { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -129,8 +119,6 @@ namespace Vidly.Areas.Identity.Pages.Account
                 {
                     UserName = Input.Email,
                     Email = Input.Email,
-                    DrivingLicense = Input.DrivingLicense,
-                    Phone = Input.Phone
                 };
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
