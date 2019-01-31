@@ -17,6 +17,9 @@
 
 <h2>Customers</h2>
 
+<button id="newCustomer" class='btn btn-primary'>NEW CUSTOMER</button>
+<br><br>
+
 <table id="customers" class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -80,13 +83,17 @@
                             url: "/api/customers/" + custId,
                             method: "DELETE",
                             success: function () {
-                                table.row(button.parents("tr")).remove().draw();                           
+                                table.row(button.parents("tr")).remove().draw();
                             }
                         });
                     }
                 });
 
             });
+        });
+
+        $('#newCustomer').on('click', function () {
+            window.location = "/Customers/New";
         });
     </script>
 }

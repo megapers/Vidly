@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using Vidly.Models;
-using System;
 using Vidly.Data;
 using Vidly.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Vidly.Controllers
 {

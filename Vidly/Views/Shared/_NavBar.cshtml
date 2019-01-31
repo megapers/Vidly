@@ -16,12 +16,13 @@
                 {
                     <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
-                    <li>@Html.ActionLink("New Rental", "New", "Rentals")</li>
+                    <li>@Html.ActionLink("Rentals", "Index", "Rentals")</li>
                 }
                 else if (User.IsInRole(RoleName.User))
                 {
+                    <li>@Html.ActionLink("Customers", "Index", "Customers")</li>
                     <li>@Html.ActionLink("Movies", "Index", "Movies")</li>
-                    <li>@Html.ActionLink("New Rental", "New", "Rentals")</li>
+                    <li>@Html.ActionLink("Rentals", "Index", "Rentals")</li>
                 }
                 else
                 {

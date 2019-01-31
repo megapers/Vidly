@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -100,5 +101,25 @@ namespace Vidly.Controllers.Api
             }
         }
 
+        //DELETE /api/newRental/id
+        [HttpDelete("{id}")]
+        public async Task DeleteRental(int id)
+        {
+            using (_context)
+            {
+                var rentalInDb = await _context.Rental
+                    .Include(r => r.Movie)
+                    .Include(r => r.Customer )
+                    .SingleOrDefaultAsync(r => r.Id == id);
+
+                if (rentalInDb == null)
+                {
+                    NotFound();
+                }
+                rentalInDb.Movie.Available++;
+                _context.Rental.Remove(rentalInDb);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

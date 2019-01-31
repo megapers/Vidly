@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Vidly.Models.Rental>
+@{
+    ViewBag.Title = "Rentals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Rentals</h2>
+
+<button id="newRental" class='btn btn-primary'>NEW RENTAL</button>
+<br><br>
+
+<table id="rentals" class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Customer</th>
+            <th>Movie</th>
+            <th>Date Rented</th>
+            <th>Check In</th>
+        </tr>
+    </thead>
+</table>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            //DataTable plugin!
+            var table = $("#rentals").DataTable({
+                ajax: {
+                    url: "/api/newRental/",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "id"
+                    },
+                    {
+                        data: "customer.name",
+                    },
+                    {
+                        data: "movie.name",
+                        
+                    },
+                    {
+                        data: "dateRented",
+                        render: function (data) {
+                            return formatDate(data);
+                        }
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-checkin' data-rental-id=" + data + ">Check In</button>";
+                        }
+                    }
+                ]
+
+            });
+            $('#rentals').on('click', '.js-checkin', function () {
+                var button = $(this);
+                var rentId = button.attr("data-rental-id");
+                //bootbox plugin
+                bootbox.confirm("Check in this movie?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/newRental/" + rentId,
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+
+            });
+        });
+
+        function formatDate(data) {
+            var date = new Date(data);
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
+        }
+
+        $('#newRental').on('click', function () {
+            window.location = "/Rentals/New";
+        });
+    </script>
+}
